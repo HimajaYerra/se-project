@@ -1,0 +1,65 @@
+[
+  {
+    "onHoliday": "false",
+    "onWeekday": "true",
+    "onWeekend": "false",
+    "slot": "9AM",
+    "isAvailable": "true"
+  },
+  {
+    "onHoliday": "false",
+    "onWeekday": "true",
+    "onWeekend": "false",
+    "slot": "10AM",
+    "isAvailable": "true"
+  },
+  {
+    "onHoliday": "false",
+    "onWeekday": "true",
+    "onWeekend": "false",
+    "slot": "11AM",
+    "isAvailable": "true"
+  },
+  {
+    "onHoliday": "false",
+    "onWeekday": "true",
+    "onWeekend": "false",
+    "slot": "12AM",
+    "isAvailable": "true"
+  },
+  {
+    "onHoliday": "false",
+    "onWeekday": "true",
+    "onWeekend": "false",
+    "slot": "1PM",
+    "isAvailable": "true"
+  },
+  {
+    "onHoliday": "false",
+    "onWeekday": "true",
+    "onWeekend": "false",
+    "slot": "2PM",
+    "isAvailable": "true"
+  },
+  {
+    "onHoliday": "false",
+    "onWeekday": "true",
+    "onWeekend": "false",
+    "slot": "3PM",
+    "isAvailable": "true"
+  },
+  {
+    "onHoliday": "false",
+    "onWeekday": "true",
+    "onWeekend": "false",
+    "slot": "4PM",
+    "isAvailable": "true"
+  },
+  {
+    "onHoliday": "false",
+    "onWeekday": "true",
+    "onWeekend": "false",
+    "slot": "5PM",
+    "isAvailable": "true"
+  }
+  ]
