@@ -1,33 +1,41 @@
 package com.example.SpringReact.domain;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+
+import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 public class User {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
 
-    private String name;
+    private String firstName;
 
-    private Date joinDate;
+    private String lastName;
+
+    private String emailId;
 
     private String password;
 
+    private Date dob;
+
     private String ssn;
+
+    private String telephone;
+
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private List<Appointment> appointments;
 
 }

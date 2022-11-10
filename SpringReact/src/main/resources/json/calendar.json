@@ -1,65 +1,100 @@
 [
   {
     "id": 1,
-    "onHoliday": "false",
-    "onWeekday": "true",
-    "onWeekend": "false",
-    "slot": "9AM"
+    "date": "2022-10-31",
+    "day": "Monday",
+    "isHoliday": "false",
+    "isWeekend": "false"
   },
   {
     "id": 2,
-    "onHoliday": "false",
-    "onWeekday": "true",
-    "onWeekend": "false",
-    "slot": "10AM"
+    "date": "2022-11-01",
+    "day": "Tuesday",
+    "isHoliday": "false",
+    "isWeekend": "false"
   },
   {
     "id": 3,
-    "onHoliday": "false",
-    "onWeekday": "true",
-    "onWeekend": "false",
-    "slot": "11AM"
+    "date": "2022-11-02",
+    "day": "Wednesday",
+    "isHoliday": "false",
+    "isWeekend": "false"
   },
   {
     "id": 4,
-    "onHoliday": "false",
-    "onWeekday": "true",
-    "onWeekend": "false",
-    "slot": "12AM"
+    "date": "2022-11-03",
+    "day": "Thursday",
+    "isHoliday": "false",
+    "isWeekend": "false"
   },
   {
     "id": 5,
-    "onHoliday": "false",
-    "onWeekday": "true",
-    "onWeekend": "false",
-    "slot": "1PM"
+    "date": "2022-11-04",
+    "day": "Friday",
+    "isHoliday": "false",
+    "isWeekend": "false"
   },
   {
     "id": 6,
-    "onHoliday": "false",
-    "onWeekday": "true",
-    "onWeekend": "false",
-    "slot": "2PM"
+    "date": "2022-11-05",
+    "day": "Saturday",
+    "isHoliday": "false",
+    "isWeekend": "true"
   },
   {
     "id": 7,
-    "onHoliday": "false",
-    "onWeekday": "true",
-    "onWeekend": "false",
-    "slot": "3PM"
+    "date": "2022-11-06",
+    "day": "Sunday",
+    "isHoliday": "false",
+    "isWeekend": "true"
   },
   {
     "id": 8,
-    "onHoliday": "false",
-    "onWeekday": "true",
-    "onWeekend": "false",
-    "slot": "4PM"
+    "date": "2022-11-07",
+    "day": "Monday",
+    "isHoliday": "false",
+    "isWeekend": "false"
   },
   {
     "id": 9,
-    "onHoliday": "false",
-    "onWeekday": "true",
-    "onWeekend": "false",
-    "slot": "5PM"
+    "date": "2022-11-08",
+    "day": "Tuesday",
+    "isHoliday": "false",
+    "isWeekend": "false"
+  },
+  {
+    "id": 10,
+    "date": "2022-11-09",
+    "day": "Wednesday",
+    "isHoliday": "false",
+    "isWeekend": "false"
+  },
+  {
+    "id": 11,
+    "date": "2022-11-10",
+    "day": "Thursday",
+    "isHoliday": "false",
+    "isWeekend": "false"
+  },
+  {
+    "id": 12,
+    "date": "2022-11-11",
+    "day": "Friday",
+    "isHoliday": "false",
+    "isWeekend": "false"
+  },
+  {
+    "id": 13,
+    "date": "2022-11-12",
+    "day": "Saturday",
+    "isHoliday": "false",
+    "isWeekend": "true"
+  },
+  {
+    "id": 14,
+    "date": "2022-11-13",
+    "day": "Sunday",
+    "isHoliday": "false",
+    "isWeekend": "true"
   }
-  ]
+]

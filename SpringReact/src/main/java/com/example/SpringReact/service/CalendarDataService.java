@@ -1,40 +1,53 @@
 package com.example.SpringReact.service;
 
-import com.example.SpringReact.domain.SlotData;
-import com.example.SpringReact.repository.SlotDataRepository;
+import com.example.SpringReact.domain.CalendarData;
+import com.example.SpringReact.repository.CalendarDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
-public class SlotDataService {
+public class CalendarDataService {
 
     @Autowired
-    private SlotDataRepository slotDataRepository;
+    private CalendarDataRepository calendarDataRepository;
+
+    @Autowired
+    private  SlotDataService slotDataService;
 
 
-    @Transactional
-    public SlotData create(SlotData slotData){
-
-        return slotDataRepository.save(slotData);
-    }
 
     @Transactional
-    public Object createAll(List<SlotData> slotData){
+    public Object createAll(List<CalendarData> calendarData){
+        return calendarDataRepository.saveAll(calendarData);
+    }
 
-        return slotDataRepository.saveAll(slotData);
+    @Transactional
+    public CalendarData create(CalendarData calendarData){
+
+        return calendarDataRepository.save(calendarData);
     }
     @Transactional(readOnly = true)
-    public List<SlotData> findAll(){
-        return slotDataRepository.findAll();
+    public List<String> findSlotsByDate(String date){
+        LocalDate d = LocalDate.parse(date);
+        Optional<CalendarData> calendarData = calendarDataRepository.findByDate(d);
+        CalendarData c = calendarData.get();
+        if(c.getIsHoliday()|| c.getIsWeekend())
+            return new ArrayList<>();
+        else {
+            return slotDataService.findSlots(c.getId(),true);
+        }
     }
 
     @Transactional(readOnly = true)
-    public SlotData findLocation(Long id){
-        return slotDataRepository.findById(id).orElseThrow(()->new IllegalArgumentException("Check Id"));
-    }
+    public Optional<CalendarData> findCalendarByDate(LocalDate date){
+      return calendarDataRepository.findByDate(date);
 
+    }
 
 }

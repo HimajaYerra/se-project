@@ -1,11 +1,16 @@
 package com.example.SpringReact.repository;
 
 import com.example.SpringReact.domain.Account;
+import com.example.SpringReact.domain.Location;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 
-public interface AccountRepository extends JpaRepository<Account,String> {
+public interface LocationRepository extends JpaRepository<Location,Long> {
 
-    Optional<Account> findByName(String name);
+    //Optional<List<Location>> findByService(String service);
+
+    Optional<Location> findById(Long id);
+
 }

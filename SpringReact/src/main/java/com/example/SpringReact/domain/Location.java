@@ -1,22 +1,30 @@
 package com.example.SpringReact.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import java.util.Date;
+import javax.persistence.*;
+import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Account {
+public class Location {
 
     @Id
-    private String name;
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    private Integer id;
 
-    private String password;
+    private String city;
+
+    private String state;
+
+    @ManyToMany
+    @JoinTable(
+            name = "location_services",
+            joinColumns = @JoinColumn(name = "location_id"),
+            inverseJoinColumns = @JoinColumn(name = "service_id"))
+    private Set<Service> locationServices;
 
 }

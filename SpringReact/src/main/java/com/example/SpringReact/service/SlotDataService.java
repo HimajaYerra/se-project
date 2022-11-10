@@ -1,38 +1,53 @@
 package com.example.SpringReact.service;
 
-import com.example.SpringReact.domain.Appointment;
-import com.example.SpringReact.domain.Location;
-import com.example.SpringReact.domain.Login;
-import com.example.SpringReact.domain.User;
-import com.example.SpringReact.repository.AccountRepository;
-import com.example.SpringReact.repository.LocationRepository;
-import com.example.SpringReact.repository.UserRepository;
+import com.example.SpringReact.domain.CalendarData;
+import com.example.SpringReact.domain.SlotData;
+import com.example.SpringReact.repository.SlotDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
-public class LocationService {
+public class SlotDataService {
 
     @Autowired
-    private LocationRepository locationRepository;
+    private SlotDataRepository slotDataRepository;
+
 
     @Transactional
-    public Location create(Location location){
+    public SlotData create(SlotData slotData){
 
-        return locationRepository.save(location);
-    }
-    @Transactional(readOnly = true)
-    public List<Location> findAll(){
-        return locationRepository.findAll();
+        return slotDataRepository.save(slotData);
     }
 
+    @Transactional
+    public List<SlotData> createAll(List<SlotData> slotData){
+
+        return slotDataRepository.saveAll(slotData);
+    }
     @Transactional(readOnly = true)
-    public Location findLocation(Long id){
-        return locationRepository.findById(id).orElseThrow(()->new IllegalArgumentException("Check Id"));
+    public List<SlotData> findAll(){
+        return slotDataRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public SlotData findLocation(Long id){
+        return slotDataRepository.findById(id).orElseThrow(()->new IllegalArgumentException("Check Id"));
+    }
+    @Transactional(readOnly = true)
+    public List<String> findSlots(Integer calendar_id,Boolean day){
+        Optional<List<SlotData>> slots = slotDataRepository.findByOnWeekdayAndIsAvailableAndCalendarId(day,true,new CalendarData(calendar_id));
+        return slots.get().stream().map(slot->slot.getSlot()).collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<SlotData> findSlotsBySlotAndDate(String slot, Integer date){
+            return slotDataRepository.findBySlotAndCalendarId(slot,new CalendarData(date));
     }
 
 }

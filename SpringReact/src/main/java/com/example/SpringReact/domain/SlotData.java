@@ -1,25 +1,28 @@
 package com.example.SpringReact.domain;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class CalendarData {
+public class SlotData {
 
     @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
-    private Date date;
-    private String day;
-    private Boolean isHoliday;
-    private Boolean isWeekend;
+    @ManyToOne
+    @JoinColumn(name="calendar_id", nullable=false)
+    private CalendarData calendarId;
+    private String slot;
+    private Boolean onWeekday;
+    private Boolean onWeekend;
+    private Boolean onHoliday;
+    private Boolean isAvailable;
 
 }

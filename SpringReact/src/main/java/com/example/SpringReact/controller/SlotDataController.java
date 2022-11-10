@@ -1,20 +1,34 @@
 package com.example.SpringReact.controller;
 
-import com.example.SpringReact.domain.Appointment;
 import com.example.SpringReact.domain.Location;
-import com.example.SpringReact.service.AppointmentService;
+import com.example.SpringReact.domain.SlotData;
+import com.example.SpringReact.service.CalendarDataService;
 import com.example.SpringReact.service.LocationService;
+import com.example.SpringReact.service.SlotDataService;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
+
 @RequiredArgsConstructor
 @RestController
-public class LocationController {
+@CrossOrigin
+public class SlotDataController {
 
 
-    private final LocationService locationService;
+    @Autowired
+    private  SlotDataService slotDataService;
+    @Autowired
+    private CalendarDataService calendarDataService;
     /*
     @GetMapping("/")
     public ResponseEntity<?> findAll(){
@@ -36,25 +50,48 @@ public class LocationController {
     */
 
     //@CrossOrigin
-    @PostMapping("/location")
-    public ResponseEntity<?> save(@RequestBody Location location){
+    @PostMapping("/slotData")
+    public ResponseEntity<?> save(@RequestBody SlotData slotData){
 
-        System.out.println("Location " + location.getLocationServices());
-        System.out.println("Service " + location.getState());
-        return new ResponseEntity<>(locationService.create(location), HttpStatus.CREATED);
+        System.out.println("Location " + slotData.getSlot());
+        System.out.println("Service " + slotData.getOnWeekend());
+        return new ResponseEntity<>(slotDataService.create(slotData), HttpStatus.CREATED);
     
     }
-    @GetMapping("/location")
+    @GetMapping("/slotData")
     public ResponseEntity<?> findAll(){
-        return new ResponseEntity<>(locationService.findAll(), HttpStatus.OK);
+        return new ResponseEntity<>(slotDataService.findAll(), HttpStatus.OK);
     }
 
     @CrossOrigin
-    @GetMapping("/location/{id}")
+    @GetMapping("/slotData/{id}")
     public ResponseEntity<?> findAll(@PathVariable Long id){
 
-        return new ResponseEntity<>(locationService.findLocation(id), HttpStatus.OK);
+        return new ResponseEntity<>(slotDataService.findLocation(id), HttpStatus.OK);
     }
 
+    @GetMapping("/slots/{date}")
+    @CrossOrigin
+    public ResponseEntity<List<String>> findAllSlots(@PathVariable("date") String d){
+
+        return new ResponseEntity<>(calendarDataService.findSlotsByDate(d), HttpStatus.OK);
+    }
+
+   /* @PostMapping ("/allSlots")
+    public ResponseEntity<?> saveToDb() {
+        // read json and write to db
+        ObjectMapper mapper = new ObjectMapper();
+        TypeReference<List<SlotData>> typeReference = new TypeReference<List<SlotData>>() {
+        };
+        InputStream inputStream = TypeReference.class.getResourceAsStream("/json/slots.json");
+        try {
+            List<SlotData> users = mapper.readValue(inputStream, typeReference);
+            slotDataService.createAll(users);
+            System.out.println("Users Saved!");
+        } catch (IOException e) {
+            System.out.println("Unable to save users: " + e.getMessage());
+        }
+        return new ResponseEntity("Success", HttpStatus.CREATED);
+    }*/
 
 }

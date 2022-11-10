@@ -1,26 +1,40 @@
 package com.example.SpringReact.service;
 
-import com.example.SpringReact.domain.Book;
-import com.example.SpringReact.domain.BookRepository;
+import com.example.SpringReact.domain.Appointment;
+import com.example.SpringReact.domain.CalendarData;
+import com.example.SpringReact.domain.SlotData;
+import com.example.SpringReact.repository.AppointmentRepository;
+import com.example.SpringReact.repository.CalendarDataRepository;
+import com.example.SpringReact.repository.SlotDataRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.List;
-import java.util.function.Supplier;
 
 //function, algorithm, transaction
 
 @RequiredArgsConstructor
 @Service
-public class BookService {
+public class AppointmentService {
 
-    private final BookRepository bookRepository;
+    @Autowired
+    private AppointmentRepository appointmentRepository;
 
+    @Autowired
+    private CalendarDataService calendarDataService;
+
+    @Autowired
+    private SlotDataService slotDataService;
     @Transactional
-    public Book create(Book book){
-        return bookRepository.save(book);
+    public Appointment create(Appointment appointment){
+        CalendarData calendarData =  calendarDataService.findCalendarByDate(appointment.getDate()).get();
+        SlotData slotData = slotDataService.findSlotsBySlotAndDate(appointment.getSlot(),calendarData.getId()).get();
+        slotData.setIsAvailable(false);
+        slotDataService.create(slotData);
+        return appointmentRepository.save(appointment);
     }
 
     /*
@@ -34,28 +48,28 @@ public class BookService {
     }
     */
     @Transactional(readOnly = true)
-    public Book findBook(Long id){
-        return bookRepository.findById(id).orElseThrow(()->new IllegalArgumentException("Check Id"));
+    public Appointment findAppointment(Long id){
+        return appointmentRepository.findById(id).orElseThrow(()->new IllegalArgumentException("Check Id"));
     }
 
     @Transactional(readOnly = true)
-    public List<Book> findAll(){
-        return bookRepository.findAll();
+    public List<Appointment> findAll(){
+        return appointmentRepository.findAll();
     }
 
     @Transactional
-    public Book update(Long id, Book book){
-        Book bookEntity = bookRepository.findById(id)
+    public Appointment update(Long id, Appointment appointment){
+        Appointment appointmentEntity = appointmentRepository.findById(id)
                 .orElseThrow(()->new IllegalArgumentException("check Id"));  //Persistence Context
 
-        bookEntity.setTitle(book.getTitle());
-        bookEntity.setAuthor(book.getAuthor());
-        return bookEntity;
+        //appointmentEntity.setTitle(appointment.getTitle());
+        //appointmentEntity.setAuthor(appointment.getAuthor());
+        return appointmentEntity;
     }// When the transaction end, the persisted data to the database update the database (flush)
 
-    @Transactional
+        @Transactional
     public String delete(Long id){
-        bookRepository.deleteById(id);
+        appointmentRepository.deleteById(id);
         return "ok";
     }
 

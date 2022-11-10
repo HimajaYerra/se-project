@@ -1,7 +1,9 @@
 package com.example.SpringReact.controller;
 
 import com.example.SpringReact.domain.Appointment;
+import com.example.SpringReact.domain.Location;
 import com.example.SpringReact.service.AppointmentService;
+import com.example.SpringReact.service.LocationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,10 +11,10 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-public class AppointmentController {
+public class LocationController {
 
 
-    private final AppointmentService appointmentService;
+    private final LocationService locationService;
     /*
     @GetMapping("/")
     public ResponseEntity<?> findAll(){
@@ -34,37 +36,25 @@ public class AppointmentController {
     */
 
     //@CrossOrigin
-    @PostMapping("/appointment")
-    public ResponseEntity<?> save(@RequestBody Appointment appointment){
+    @PostMapping("/location")
+    public ResponseEntity<?> save(@RequestBody Location location){
 
-        System.out.println("Location " + appointment.getLocation());
-        System.out.println("Service " + appointment.getService());
-        return new ResponseEntity<>(appointmentService.create(appointment), HttpStatus.CREATED);
+        System.out.println("Location " + location.getLocationServices());
+        System.out.println("Service " + location.getState());
+        return new ResponseEntity<>(locationService.create(location), HttpStatus.CREATED);
     
     }
-    @CrossOrigin
-    @GetMapping("/appointment")
+    @GetMapping("/location")
     public ResponseEntity<?> findAll(){
-        return new ResponseEntity<>(appointmentService.findAll(), HttpStatus.OK);
+        return new ResponseEntity<>(locationService.findAll(), HttpStatus.OK);
     }
 
     @CrossOrigin
-    @GetMapping("/appointment/{id}")
+    @GetMapping("/location/{id}")
     public ResponseEntity<?> findAll(@PathVariable Long id){
 
-        return new ResponseEntity<>(appointmentService.findAppointment(id), HttpStatus.OK);
+        return new ResponseEntity<>(locationService.findLocation(id), HttpStatus.OK);
     }
-    @CrossOrigin
-    @PutMapping("/appointment/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Appointment appointment){
-        return new ResponseEntity<>(appointmentService.update(id, appointment), HttpStatus.OK);
-    }
-    @CrossOrigin
-    @DeleteMapping("/appointment/{id}")
-    public ResponseEntity<?> deleteById(@PathVariable Long id){
-        return new ResponseEntity<>(appointmentService.delete(id), HttpStatus.OK);
-    }
-
 
 
 }

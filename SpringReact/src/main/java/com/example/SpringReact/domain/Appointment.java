@@ -1,27 +1,30 @@
 package com.example.SpringReact.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import lombok.*;
+
+import javax.persistence.*;
+import java.time.LocalDate;
+import java.util.Date;
 
 //Lombok
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 @Entity //  mapping an object state to database column
-public class Book {
+public class Appointment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // use the auto increment of the database
     private Long id;
-
-    private String title;
-    private String author;
-
-
-
+    private String service;
+    private String location;
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    private LocalDate date;
+    private String slot;
+    @ManyToOne
+    @JoinColumn(name="user_id", nullable=false)
+    private User user;
 }

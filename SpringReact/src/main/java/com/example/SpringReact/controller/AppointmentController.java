@@ -1,22 +1,27 @@
 package com.example.SpringReact.controller;
 
-import com.example.SpringReact.domain.Book;
-import com.example.SpringReact.service.BookService;
+import com.example.SpringReact.domain.Appointment;
+import com.example.SpringReact.domain.User;
+import com.example.SpringReact.service.AppointmentService;
+import com.example.SpringReact.service.SecurityService;
+import com.example.SpringReact.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-public class BookController {
+public class AppointmentController {
 
 
-    private final BookService bookService;
+    @Autowired
+    private AppointmentService appointmentService;
+    @Autowired
+    private SecurityService securityService;
+    @Autowired
+    private UserService userService;
     /*
     @GetMapping("/")
     public ResponseEntity<?> findAll(){
@@ -37,36 +42,38 @@ public class BookController {
     @PathVariable annotation can be used to handle template variables in the request URI mapping
     */
 
-    @CrossOrigin
-    @PostMapping("/book")
-    public ResponseEntity<?> save(@RequestBody Book book){
+    //@CrossOrigin
+    @PostMapping("/appointment")
+    public ResponseEntity<?> save(@RequestHeader(value = "Authorization") String token, @RequestBody Appointment appointment){
 
-        System.out.println("title " + book.getTitle());
-        System.out.println("author " + book.getTitle());
-        return new ResponseEntity<>(bookService.create(book), HttpStatus.CREATED);
+        String user = securityService.getSubject(token);
+        System.out.println("USER " + user);
+        System.out.println("Service " + appointment.getService());
+        appointment.setUser(userService.findUser(user).get());
+        return new ResponseEntity<>(appointmentService.create(appointment), HttpStatus.CREATED);
     
     }
     @CrossOrigin
-    @GetMapping("/book")
+    @GetMapping("/appointment")
     public ResponseEntity<?> findAll(){
-        return new ResponseEntity<>(bookService.findAll(), HttpStatus.OK);
+        return new ResponseEntity<>(appointmentService.findAll(), HttpStatus.OK);
     }
 
     @CrossOrigin
-    @GetMapping("/book/{id}")
+    @GetMapping("/appointment/{id}")
     public ResponseEntity<?> findAll(@PathVariable Long id){
 
-        return new ResponseEntity<>(bookService.findBook(id), HttpStatus.OK);
+        return new ResponseEntity<>(appointmentService.findAppointment(id), HttpStatus.OK);
     }
     @CrossOrigin
-    @PutMapping("/book/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Book book){
-        return new ResponseEntity<>(bookService.update(id, book), HttpStatus.OK);
+    @PutMapping("/appointment/{id}")
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Appointment appointment){
+        return new ResponseEntity<>(appointmentService.update(id, appointment), HttpStatus.OK);
     }
     @CrossOrigin
-    @DeleteMapping("/book/{id}")
+    @DeleteMapping("/appointment/{id}")
     public ResponseEntity<?> deleteById(@PathVariable Long id){
-        return new ResponseEntity<>(bookService.delete(id), HttpStatus.OK);
+        return new ResponseEntity<>(appointmentService.delete(id), HttpStatus.OK);
     }
 
 

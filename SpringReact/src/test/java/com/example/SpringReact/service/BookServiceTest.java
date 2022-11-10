@@ -1,38 +1,38 @@
 package com.example.SpringReact.service;
 
-import com.example.SpringReact.domain.Book;
-import com.example.SpringReact.domain.BookRepository;
+import com.example.SpringReact.domain.Appointment;
+//import com.example.SpringReact.domain.BookRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 class BookServiceTest {
 
-    @Autowired BookRepository bookRepository;
-    @Autowired BookService bookService;
+   /* @Autowired BookRepository bookRepository;
+    @Autowired
+    AppointmentService appointmentService;
 
     @Test
     void create() {
         //test case
-        Book book = new Book();
-        book.setTitle("Harry Potter");
-        book.setTitle("J.K.Rolling");
+        Appointment appointment = new Appointment();
+        appointment.setTitle("Harry Potter");
+        appointment.setTitle("J.K.Rolling");
 
         //run
-        bookService.create(book);
+        appointmentService.create(appointment);
 
-        System.out.println(book.getTitle());
-        System.out.println(book.getId());
+        System.out.println(appointment.getTitle());
+        System.out.println(appointment.getId());
 
-        Book result = bookService.findBook(book.getId());
-        assertEquals(book, result);
+        Appointment result = appointmentService.findBook(appointment.getId());
+        assertEquals(appointment, result);
     }
 
 
@@ -42,5 +42,5 @@ class BookServiceTest {
 
     @Test
     void findAll() {
-    }
+    }*/
 }

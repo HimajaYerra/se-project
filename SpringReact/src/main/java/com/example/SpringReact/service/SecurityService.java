@@ -29,7 +29,7 @@ public class SecurityService {
         return Jwts.builder()
                 .setSubject(subject)
                 .signWith(signingKey, signatureAlgorithm)
-                .setExpiration(new Date(System.currentTimeMillis() + expTime))
+                .setExpiration(new Date(System.currentTimeMillis() + (1000 * 60 * 60 * 24)))
                 .compact();
     }
 
