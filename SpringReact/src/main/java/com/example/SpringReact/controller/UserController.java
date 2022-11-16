@@ -1,5 +1,6 @@
 package com.example.SpringReact.controller;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
 import com.example.SpringReact.domain.Account;
 import com.example.SpringReact.domain.Login;
 import com.example.SpringReact.domain.User;
@@ -53,8 +54,16 @@ public class UserController {
     @PostMapping("/user")
     public ResponseEntity<User> createUser(@RequestBody User userAccount){
 
+        System.out.println(userAccount.getFirstName());
         //Optional<User> user = userRepository.findByEmailId(userAccount.getEmailId());
-        return new ResponseEntity<>(userRepository.save(userAccount),HttpStatus.CREATED);
+        User newUser = new User();
+        try {
+             newUser = userRepository.save(userAccount);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(newUser,HttpStatus.CREATED);
 
     }
 
@@ -68,13 +77,16 @@ public class UserController {
         String token = securityService.createToken(login.getName(),(1*1000*10));
         Map<String, Object> map = new LinkedHashMap<>();
         map.put("token", token);
+        if(login.getName().toLowerCase().contains("admin"))
+            map.put("isAdmin",true);
+        Boolean valid = userService.validateUserLogin(login);
+        System.out.println("validation" + valid);
 
-        System.out.println("validation" + userService.validateUserLogin(login));
-
-        if (userService.validateUserLogin(login)) {
+        if (valid) {
+            map.put("valid",valid);
             return ResponseEntity.status(200).body(map);
         }
-        return ResponseEntity.status(400).body(null);
+        return ResponseEntity.status(400).body(map);
 
     }
 

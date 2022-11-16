@@ -18,8 +18,8 @@ public class Service {
 
     private String service;
 
-    @ManyToMany(mappedBy = "locationServices")
-    private Set<Location> locations;
+   /* @ManyToMany(mappedBy = "locationServices")
+    private Set<Location> locations;*/
 
 
     }

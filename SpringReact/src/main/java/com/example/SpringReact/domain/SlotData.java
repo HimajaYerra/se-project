@@ -1,6 +1,7 @@
 package com.example.SpringReact.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import lombok.*;
 
 import javax.persistence.*;
@@ -19,10 +20,18 @@ public class SlotData {
     @ManyToOne
     @JoinColumn(name="calendar_id", nullable=false)
     private CalendarData calendarId;
+    @ManyToOne
+    @JoinColumn(name="location_id", nullable=false)
+    private Location locationId;
+
     private String slot;
+    @JsonAlias(value="on_weekday")
     private Boolean onWeekday;
+    @JsonAlias(value="on_weekend")
     private Boolean onWeekend;
+    @JsonAlias(value="on_holiday")
     private Boolean onHoliday;
+    @JsonAlias(value="is_available")
     private Boolean isAvailable;
 
 }

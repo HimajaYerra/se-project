@@ -9,8 +9,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @RestController
+@CrossOrigin
 public class LocationController {
 
 
@@ -39,10 +42,16 @@ public class LocationController {
     @PostMapping("/location")
     public ResponseEntity<?> save(@RequestBody Location location){
 
-        System.out.println("Location " + location.getLocationServices());
-        System.out.println("Service " + location.getState());
+
         return new ResponseEntity<>(locationService.create(location), HttpStatus.CREATED);
     
+    }
+
+    @PostMapping("/locations")
+    public ResponseEntity<?> save(@RequestBody List<Location> locations){
+
+        return new ResponseEntity<>(locationService.createAll(locations), HttpStatus.CREATED);
+
     }
     @GetMapping("/location")
     public ResponseEntity<?> findAll(){

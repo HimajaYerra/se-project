@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface LocationRepository extends JpaRepository<Location,Long> {
 
-    //Optional<List<Location>> findByService(String service);
+    Optional<Location> findByCityState(String cityAndState);
 
     Optional<Location> findById(Long id);
 

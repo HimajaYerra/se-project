@@ -1,12 +1,7 @@
 package com.example.SpringReact.service;
 
-import com.example.SpringReact.domain.Appointment;
 import com.example.SpringReact.domain.Location;
-import com.example.SpringReact.domain.Login;
-import com.example.SpringReact.domain.User;
-import com.example.SpringReact.repository.AccountRepository;
 import com.example.SpringReact.repository.LocationRepository;
-import com.example.SpringReact.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,8 +17,16 @@ public class LocationService {
 
     @Transactional
     public Location create(Location location){
-
+        Optional<Location> loc = locationRepository.findByCityState(location.getCityState());
+        if(loc.isPresent())
+            return loc.get();
         return locationRepository.save(location);
+    }
+
+    @Transactional
+    public Object createAll(List<Location> locations){
+
+        return locationRepository.saveAll(locations);
     }
     @Transactional(readOnly = true)
     public List<Location> findAll(){

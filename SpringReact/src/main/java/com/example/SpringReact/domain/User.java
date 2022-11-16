@@ -1,6 +1,7 @@
 package com.example.SpringReact.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
@@ -20,10 +21,13 @@ public class User {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
 
+    @JsonAlias(value = "first_name")
     private String firstName;
 
+    @JsonAlias(value = "last_name")
     private String lastName;
 
+    @JsonAlias(value = "email_id")
     private String emailId;
 
     private String password;

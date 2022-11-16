@@ -1,11 +1,9 @@
 package com.example.SpringReact.controller;
 
 import com.example.SpringReact.domain.CalendarData;
+import com.example.SpringReact.domain.Location;
 import com.example.SpringReact.domain.SlotData;
-import com.example.SpringReact.service.CalendarDataService;
-import com.example.SpringReact.service.SecurityService;
-import com.example.SpringReact.service.SlotDataService;
-import com.example.SpringReact.service.UserService;
+import com.example.SpringReact.service.*;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +13,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
 @RestController
+@CrossOrigin
 public class DataController {
 
 
@@ -32,6 +32,9 @@ public class DataController {
     private  SlotDataService slotDataService;
     @Autowired
     private  CalendarDataService calendarDataService;
+
+    @Autowired
+    private  LocationService locationService;
 
    /* @GetMapping("/locations/{service}")
     public ResponseEntity<User> findLocationsForService(@PathVariable String service){
@@ -79,26 +82,47 @@ public class DataController {
         return new ResponseEntity("Success", HttpStatus.CREATED);
     }
 
-    @PostMapping ("/oneDate/")
-    public ResponseEntity<?> saveOneCalendarDateToDb(@RequestBody CalendarData date) {
+    @PostMapping ("/oneDate")
+    public ResponseEntity<?> saveOneSlotDataToDb(@RequestBody SlotData slotData) {
         // read json and write to db
+
         ObjectMapper mapper = new ObjectMapper();
 
-        TypeReference<List<SlotData>> typeReference2 = new TypeReference<List<SlotData>>() {
-        };
-        InputStream inputStream = TypeReference.class.getResourceAsStream("/json/slots.json");
+        CalendarData calendarData = calendarDataService.create(slotData.getCalendarId());
+        System.out.println("Calendar date Saved!");
+        Location location = locationService.create(slotData.getLocationId());
+        System.out.println("Location Saved!");
 
-        try {
-            List<SlotData> slots = mapper.readValue(inputStream, typeReference2);
-            CalendarData calendarData = calendarDataService.create(date);
-            if(!(calendarData.getIsWeekend() || calendarData.getIsHoliday())) {
-                slots.stream().forEach(slot -> slot.setCalendarId(calendarData));
-                List<SlotData> slotDataList = slotDataService.createAll(slots);
+            try {
+                List<SlotData> slots = new ArrayList<SlotData>();
+                if("default".equalsIgnoreCase(slotData.getSlot())) {
+                    TypeReference<List<SlotData>> typeReference2 = new TypeReference<List<SlotData>>() {
+                    };
+                    InputStream inputStream = TypeReference.class.getResourceAsStream("/json/slots.json");
+                    slots = mapper.readValue(inputStream, typeReference2);
+
+                }
+                else{
+                    SlotData slotData1 = new SlotData();
+                    slotData1.setSlot(slotData.getSlot());
+                    slotData1.setIsAvailable(true);
+                    slotData1.setOnHoliday(calendarData.getIsHoliday());
+                    slotData1.setOnWeekday(!calendarData.getIsWeekend());
+                    slotData1.setOnWeekend(calendarData.getIsWeekend());
+                    slots.add(slotData1);
+
+                }
+                    if (!(calendarData.getIsWeekend() || calendarData.getIsHoliday())) {
+                        slots.stream().forEach(slot -> slot.setCalendarId(calendarData));
+                        slots.stream().forEach(slot -> slot.setLocationId(location));
+                        List<SlotData> slotDataList = slotDataService.createAll(slots);
+
+                    }
+                System.out.println("slot Data Saved!");
+            } catch (Exception e) {
+                System.out.println("Unable to save Slot data: " + e.getMessage());
+                return new ResponseEntity<>("Error", HttpStatus.BAD_REQUEST);
             }
-            System.out.println("Calendar date Saved!");
-        } catch (Exception e) {
-            System.out.println("Unable to save calendar date: " + e.getMessage());
-        }
         return new ResponseEntity("Success", HttpStatus.CREATED);
     }
 

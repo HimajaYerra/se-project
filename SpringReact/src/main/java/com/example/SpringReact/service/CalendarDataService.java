@@ -29,19 +29,25 @@ public class CalendarDataService {
 
     @Transactional
     public CalendarData create(CalendarData calendarData){
-
+        Optional<CalendarData> date = calendarDataRepository.findByDate(calendarData.getDate());
+        if( date.isPresent())
+            return date.get();
         return calendarDataRepository.save(calendarData);
     }
     @Transactional(readOnly = true)
     public List<String> findSlotsByDate(String date){
         LocalDate d = LocalDate.parse(date);
         Optional<CalendarData> calendarData = calendarDataRepository.findByDate(d);
-        CalendarData c = calendarData.get();
-        if(c.getIsHoliday()|| c.getIsWeekend())
-            return new ArrayList<>();
-        else {
-            return slotDataService.findSlots(c.getId(),true);
+        if(calendarData.isPresent()) {
+            CalendarData c = calendarData.get();
+            if (c.getIsHoliday() || c.getIsWeekend())
+                return new ArrayList<>();
+            else {
+                return slotDataService.findSlots(c.getId(), true);
+            }
         }
+        else
+            return new ArrayList<>();
     }
 
     @Transactional(readOnly = true)
