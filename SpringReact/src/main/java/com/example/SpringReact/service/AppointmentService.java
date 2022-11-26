@@ -2,6 +2,7 @@ package com.example.SpringReact.service;
 
 import com.example.SpringReact.domain.Appointment;
 import com.example.SpringReact.domain.CalendarData;
+import com.example.SpringReact.domain.EmailDetails;
 import com.example.SpringReact.domain.SlotData;
 import com.example.SpringReact.repository.AppointmentRepository;
 import com.example.SpringReact.repository.CalendarDataRepository;
@@ -12,7 +13,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import javax.mail.MessagingException;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Optional;
 
 //function, algorithm, transaction
 
@@ -28,13 +34,41 @@ public class AppointmentService {
 
     @Autowired
     private SlotDataService slotDataService;
+
+    @Autowired
+    private EmailService emailService;
     @Transactional
     public Appointment create(Appointment appointment){
         CalendarData calendarData =  calendarDataService.findCalendarByDate(appointment.getDate()).get();
-        SlotData slotData = slotDataService.findSlotsBySlotAndDate(appointment.getSlot(),calendarData.getId()).get();
+        Optional<SlotData> slot = slotDataService.findSlotsBySlotAndDate(appointment.getSlot(),calendarData.getId());
+        if(!slot.isPresent())
+            return null;
+        SlotData slotData = slot.get();
         slotData.setIsAvailable(false);
-        slotDataService.create(slotData);
+        slotDataService.update(slotData.getId(),slotData);
+        EmailDetails details = new EmailDetails();
+        details.setSubject("Appointment Confirmed");
+        details.setMsgBody("Please make sure to be there at the location 10 minutes before the appointment!");
+        details.setRecipient(appointment.getUser().getEmailId());
+        Calendar c = Calendar.getInstance();
+        LocalDate d = calendarData.getDate();
+        String s = slotData.getSlot();
+        int hour = Integer.parseInt(s.substring(0,s.length()-2));
+        c.set(d.getYear(),d.getMonthValue(),d.getDayOfMonth(),hour,0);
+        details.setCalendar(c);
+        try {
+            String status
+                    = emailService.sendMailWithEvent(details);
+            System.out.println(status);
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+        catch (MessagingException e){
+            e.printStackTrace();
+        }
         return appointmentRepository.save(appointment);
+
     }
 
     /*

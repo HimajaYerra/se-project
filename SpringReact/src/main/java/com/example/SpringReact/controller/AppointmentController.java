@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
+@CrossOrigin
 public class AppointmentController {
 
 
@@ -44,13 +45,16 @@ public class AppointmentController {
 
     //@CrossOrigin
     @PostMapping("/appointment")
-    public ResponseEntity<?> save(@RequestHeader(value = "Authorization") String token, @RequestBody Appointment appointment){
+    public ResponseEntity<?> save(@RequestHeader(value = "token") String token, @RequestBody Appointment appointment){
 
         String user = securityService.getSubject(token);
         System.out.println("USER " + user);
         System.out.println("Service " + appointment.getService());
         appointment.setUser(userService.findUser(user).get());
-        return new ResponseEntity<>(appointmentService.create(appointment), HttpStatus.CREATED);
+        Appointment app = appointmentService.create(appointment);
+        if(app==null)
+            return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(app,HttpStatus.CREATED);
     
     }
     @CrossOrigin

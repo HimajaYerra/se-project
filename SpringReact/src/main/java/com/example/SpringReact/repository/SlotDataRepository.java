@@ -20,7 +20,7 @@ public interface SlotDataRepository extends JpaRepository<SlotData,Long> {
     Optional<List<SlotData>> findByOnWeekdayAndIsAvailableAndCalendarId(Boolean day, Boolean avail,CalendarData calendarId);
 
 
-    Optional<SlotData> findBySlotAndCalendarId(String slot, CalendarData id);
+    Optional<SlotData> findBySlotAndCalendarIdAndIsAvailable(String slot, CalendarData id, Boolean available);
 
 
 }

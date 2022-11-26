@@ -4,7 +4,21 @@ server:
 spring:
   application:
     name: book-service
-
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: "himajay02@gmail.com"
+    password: "ahkfkbccxjxvaasm"
+    protocol: smtp
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          ssl:
+            trust: "smtp.gmail.com"
+            protocols: TLSv1.2
   h2:
     console:
       enabled: false
@@ -27,3 +41,4 @@ spring:
 #  sql:
 #    init:
 #      mode: never
+

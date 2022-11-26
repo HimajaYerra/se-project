@@ -1,5 +1,6 @@
 package com.example.SpringReact.service;
 
+import com.example.SpringReact.domain.Appointment;
 import com.example.SpringReact.domain.CalendarData;
 import com.example.SpringReact.domain.SlotData;
 import com.example.SpringReact.repository.SlotDataRepository;
@@ -47,7 +48,16 @@ public class SlotDataService {
 
     @Transactional(readOnly = true)
     public Optional<SlotData> findSlotsBySlotAndDate(String slot, Integer date){
-            return slotDataRepository.findBySlotAndCalendarId(slot,new CalendarData(date));
+            return slotDataRepository.findBySlotAndCalendarIdAndIsAvailable(slot,new CalendarData(date),true);
+    }
+
+    @Transactional
+    public SlotData update(Long id, SlotData slotData){
+        SlotData slotData1 = slotDataRepository.findById(id)
+                .orElseThrow(()->new IllegalArgumentException("check Id"));  //Persistence Context
+
+
+        return slotDataRepository.save(slotData1);
     }
 
 }

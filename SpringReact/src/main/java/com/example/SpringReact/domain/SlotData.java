@@ -16,7 +16,7 @@ public class SlotData {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     @ManyToOne
     @JoinColumn(name="calendar_id", nullable=false)
     private CalendarData calendarId;
