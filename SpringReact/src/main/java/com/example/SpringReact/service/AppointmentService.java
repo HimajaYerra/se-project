@@ -54,7 +54,7 @@ public class AppointmentService {
         LocalDate d = calendarData.getDate();
         String s = slotData.getSlot();
         int hour = Integer.parseInt(s.substring(0,s.length()-2));
-        c.set(d.getYear(),d.getMonthValue(),d.getDayOfMonth(),hour,0);
+        c.set(d.getYear(),d.getMonthValue()-1,d.getDayOfMonth(),hour+12,0);
         details.setCalendar(c);
         try {
             String status
